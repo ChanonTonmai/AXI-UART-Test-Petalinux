@@ -1,0 +1,52 @@
+/include/ "system-conf.dtsi"
+/ {
+	model = "Zynq ALINX Development Board";
+	compatible = "alinx,zynq", "xlnx,zynq-7000";
+	aliases {
+		ethernet0 = "&gem0";
+		serial0 = "&uart1";
+	};
+
+	usb_phy0: usb_phy@0 {
+		compatible = "ulpi-phy";
+		#phy-cells = <0>;
+		reg = <0xe0002000 0x1000>;
+		view-port = <0x0170>;
+		drv-vbus;
+	};
+
+};
+
+&uart1 {
+	u-boot,dm-pre-reloc;
+};
+
+&axi_uartlite_0 {
+    status = "okay";
+};
+
+&axi_uartlite_1 {
+    status = "okay";
+};
+
+&usb0 {
+	dr_mode = "host";	
+	usb-phy = <&usb_phy0>;
+};
+
+&sdhci0 {
+	u-boot,dm-pre-reloc;
+};
+
+&flash0 {
+	compatible = "micron,m25p80", "w25q256", "spi-flash";
+};
+
+
+&gem0 {
+	phy-handle = <&ethernet_phy>;
+	ethernet_phy: ethernet-phy@1 {
+		reg = <1>;
+		device_type = "ethernet-phy";
+	};
+};
